@@ -218,6 +218,7 @@ pub mod testutil {
     pub fn test_sha_impl<S: Sha>(sha: &S) {
         test_hash_pair(sha);
         test_hash_raw_pod_slice(sha);
+        test_hash_words(sha);
         test_sha_basics(sha);
         test_elems(sha);
         test_extelems(sha);
@@ -351,6 +352,14 @@ pub mod testutil {
                 )
             );
         }
+    }
+
+    fn test_hash_words<S: Sha>(sha: &S) {
+        let words: &[u32] = &[0xff000001, 0xcc000002];
+        assert_eq!(
+            *sha.hash_words(words),
+            Digest::from_str("063e9f8f3caaf995b23627eaaf57b21836b2986c99aa9767bdd1f5b65b391101")
+        );
     }
 
     fn test_hash_pair<S: Sha>(sha: &S) {
